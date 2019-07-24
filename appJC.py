@@ -193,7 +193,8 @@ def sound_play():
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
         led_blink()
-    pygame.event.wait()
+        pygame.event.wait()
+    
 
 def led_blink():
     for index in range(1,20):
@@ -306,8 +307,8 @@ def write(x, y, str):
 
 def lcd_show():
     init(0x27, 1)
-    write(0, 0, 'YOU DARE ENTER ')
-    write(0, 1, 'MY LAND')
+    write(4, 0, 'YOU DARE')
+    write(1, 1, 'ENTER MY LAND')
 
 
 def iothub_client_sample_run():
@@ -335,20 +336,28 @@ def iothub_client_sample_run():
                 # # print ( "IoTHubClient sending %d messages" % MESSAGE_COUNT )
 
                 all_data = sensor.get_accel_data(g=True)
+                all_dataII = sensor.get_all_data()
                 temperature = sensor.get_temp()
                 msg_txt_formatted = MSG_TXT % (
                     temperature,
                     all_data)
                 limitTagY = all_data['y']
                 limitTagZ = all_data['z']
-                print (limitTagY)
-                print (limitTagZ)
-                limitTag = 0.2
-                if (abs(limitTagY) >= limitTag and abs(limitTagZ) >= limitTag):
+                print(all_data)
+                # print (limitTagY)
+                # print (limitTagZ)
+                limitTag = 0.20
+                tagA = limitTagY*limitTagY
+                tagB = limitTagZ*limitTagZ
+                if (tagA + tagB > limitTag):
                     print ("ERROR")
-                    # lcd_show()
-                    # led_blink()
-                    # sound_play()
+                    print (all_data)
+                # if (MESSAGE_COUNT % 2 == 0):
+                #     print(MESSAGE_COUNT)
+                # if (MESSAGE_COUNT % 7 == 0  and MESSAGE_COUNT > 0):
+                #     print ("ERROR")
+                #     lcd_show()
+                #     sound_play()
                 # print (msg_txt_formatted)
                 message = IoTHubMessage(msg_txt_formatted)
                 # optional: assign ids
