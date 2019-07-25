@@ -1,9 +1,5 @@
-#!/usr/bin/env python
-
+import smbus 
 import time
-import smbus
-
-BUS = smbus.SMBus(1)
 
 def write_word(addr, data):
 	global BLEN
@@ -49,8 +45,8 @@ def send_data(data):
 	write_word(LCD_ADDR ,buf)
 
 def init(addr, bl):
-#	global BUS
-#	BUS = smbus.SMBus(1)
+	# global BUS
+	# BUS = smbus.SMBus(1)
 	global LCD_ADDR
 	global BLEN
 	LCD_ADDR = addr
@@ -95,8 +91,16 @@ def write(x, y, str):
 	for chr in str:
 		send_data(ord(chr))
 
-if __name__ == '__main__':
+def init_lcd():
+    global BUS
+    BUS = smbus.SMBus(1)
     init(0x27, 1)
-    write(2, 0, 'Who Moved My')
-    write(1, 1, 'Steering Wheel')
+    write(0, 0, 'WHO MOVED')
+    write(0, 1, 'MY STEELING WELL')
 
+def warning_lcd():
+    # global BUS
+    # BUS = smbus.SMBus(1)
+    init(0x27, 1)
+    write(4, 0, 'YOU DARE')
+    write(1, 1, 'ENTER MY LAND')
