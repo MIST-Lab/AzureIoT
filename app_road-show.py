@@ -21,6 +21,7 @@ def lcd_warning():
 def three_axis():
     sensor = mpu6050(address = config.I2C_ADDRESS)
     try:
+        cnt = 1
         while True:
             accel_data = sensor.get_accel_data(g=True)
             all_data = sensor.get_all_data()
@@ -30,10 +31,12 @@ def three_axis():
             limitTagZ = accel_data['z']
             limitTag = config.LIMIT_TAG
             time.sleep(0.5)
+            # if (cnt%5 == 0):
             if (limitTagY*limitTagY + limitTagZ*limitTagZ > limitTag):
                 print ("ERROR")
                 lcd_warning()
                 sound_play()
+            cnt = cnt + 1
     except KeyboardInterrupt:
         print ("Software Closed")
 
@@ -47,7 +50,8 @@ def sound_play():
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
         led_blink()
-        pygame.event.wait()
+        time.sleep(3)
+        # pygame.event.wait()
 
 if __name__ == '__main__' :
     lcd_init()
