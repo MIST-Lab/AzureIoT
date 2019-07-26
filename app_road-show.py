@@ -29,7 +29,7 @@ def three_axis():
             limitTagY = accel_data['y']
             limitTagZ = accel_data['z']
             limitTag = config.LIMIT_TAG
-            time.sleep(1)
+            time.sleep(0.5)
             if (limitTagY*limitTagY + limitTagZ*limitTagZ > limitTag):
                 print ("ERROR")
                 lcd_warning()
